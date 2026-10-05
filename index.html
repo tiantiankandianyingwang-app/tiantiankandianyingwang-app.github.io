@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天天看电影网 - 天天看电影就上天天看电影网</title>
+<meta name="description" content="天天看电影网(tiantiankandianyingwang-app.github.io)提供最新电影、热播剧集、综艺娱乐、动漫频道等高清资源在线观看，天天看电影，就来天天看电影网！">
+<meta name="keywords" content="天天看电影网,天天看电影,电影在线观看,高清影视,电视剧,综艺,动漫">
+<meta name="robots" content="index,follow">
+<!-- 必应搜索引擎优化 -->
+<meta name="msvalidate.01" content="Bing-verification-code-placeholder" />
+
+<style>
+/* ===== 全局重置与基础 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #0a0a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ===== 动态渐变背景 ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 0, 255, 0.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 200, 255, 0.12), transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(255, 0, 128, 0.1), transparent 50%);
+    z-index: -1;
+    animation: bgShift 15s ease-in-out infinite alternate;
+}
+
+@keyframes bgShift {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* ===== 导航栏 - 玻璃拟态 ===== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: rgba(10, 10, 26, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    padding: 0.7rem 2rem;
+    background: rgba(10, 10, 26, 0.92);
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6ec4, #7873f5, #4adede);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-links a:hover {
+    color: #fff;
+    background: rgba(120, 115, 245, 0.2);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 60%;
+}
+
+/* 移动端菜单按钮 */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6ec4, #7873f5);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* ===== 主内容区 ===== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 1.5rem 2rem;
+}
+
+/* ===== Hero 区域 ===== */
+.hero {
+    text-align: center;
+    padding: 4rem 1rem 3rem;
+    margin-bottom: 3rem;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: rgba(120, 115, 245, 0.15);
+    border: 1px solid rgba(120, 115, 245, 0.3);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #a5a0f7;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 30%, #a5a0f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero h1 .highlight {
+    background: linear-gradient(135deg, #ff6ec4, #7873f5, #4adede);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    background: linear-gradient(135deg, #7873f5, #ff6ec4);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 25px rgba(120, 115, 245, 0.35);
+}
+
+.hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 35px rgba(120, 115, 245, 0.5);
+}
+
+/* ===== 栏目通用样式 ===== */
+.section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 90px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.section-title .icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+.section-more {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+}
+
+.section-more:hover {
+    color: #7873f5;
+}
+
+/* ===== 卡片网格 ===== */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+}
+
+.card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(120, 115, 245, 0.3);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.card-poster {
+    width: 100%;
+    height: 240px;
+    background: linear-gradient(135deg, rgba(120,115,245,0.2), rgba(255,110,196,0.15));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-poster::after {
+    content: '▶';
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(255,255,255,0.7);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card:hover .card-poster::after {
+    opacity: 1;
+}
+
+.card-body {
+    padding: 0.9rem;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-meta {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ===== 分类标签区 ===== */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.5rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover {
+    background: rgba(120, 115, 245, 0.1);
+    border-color: rgba(120, 115, 245, 0.3);
+    transform: scale(1.03);
+}
+
+.category-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.category-name {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ===== 排行榜列表 ===== */
+.rank-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.rank-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.rank-item:hover {
+    background: rgba(120, 115, 245, 0.08);
+    border-color: rgba(120, 115, 245, 0.25);
+}
+
+.rank-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.rank-num.top1 { background: linear-gradient(135deg, #ff6ec4, #ff9a5c); color: #fff; }
+.rank-num.top2 { background: linear-gradient(135deg, #7873f5, #4adede); color: #fff; }
+.rank-num.top3 { background: linear-gradient(135deg, #4adede, #5cff9a); color: #0a0a1a; }
+.rank-num.normal { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
+
+.rank-info {
+    flex: 1;
+}
+
+.rank-title {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+
+.rank-score {
+    color: #ff6ec4;
+    font-size: 0.8rem;
+}
+
+/* ===== 关于/底部 ===== */
+.about-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.about-section h3 {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.about-section p {
+    color: rgba(255,255,255,0.55);
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.95rem;
+}
+
+.site-url {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    background: rgba(120, 115, 245, 0.1);
+    border: 1px solid rgba(120, 115, 245, 0.25);
+    border-radius: 10px;
+    color: #a5a0f7;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 1.2rem;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 65px;
+        right: -100%;
+        flex-direction: column;
+        background: rgba(10, 10, 26, 0.97);
+        backdrop-filter: blur(20px);
+        width: 220px;
+        padding: 1.5rem;
+        border-radius: 0 0 0 16px;
+        border-left: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        transition: right 0.3s ease;
+        gap: 0.3rem;
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links a {
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+    
+    .container {
+        padding: 85px 1rem 2rem;
+    }
+    
+    .hero {
+        padding: 2rem 0.5rem 2rem;
+    }
+    
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .card-poster {
+        height: 190px;
+    }
+    
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .about-section {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .card-poster {
+        height: 170px;
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<!-- 导航栏 -->
+<nav class="navbar" id="navbar">
+    <div class="logo">🎬 天天看电影网</div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home">首页</a></li>
+        <li><a href="#movies">电影</a></li>
+        <li><a href="#tv">电视剧</a></li>
+        <li><a href="#variety">综艺</a></li>
+        <li><a href="#anime">动漫</a></li>
+        <li><a href="#rank">排行榜</a></li>
+        <li><a href="#about">关于我们</a></li>
+    </ul>
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<!-- 主内容 -->
+<div class="container">
+    
+    <!-- Hero 区域 -->
+    <section class="hero" id="home">
+        <div class="hero-badge">🎉 天天看电影 · 尽在天天看电影网</div>
+        <h1>天天看电影网<br><span class="highlight">天天看电影，精彩不停歇</span></h1>
+        <p>天天看电影网(tiantiankandianyingwang-app.github.io)为您提供最新最热的高清电影、热播剧集、综艺娱乐和动漫频道，天天看电影就来这里！</p>
+        <a href="#movies" class="hero-cta">🍿 立即观影 →</a>
+    </section>
+
+    <!-- 电影栏目 -->
+    <section class="section" id="movies">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon" style="background:rgba(255,110,196,0.15);">🎬</span> 最新电影</h2>
+            <a href="#" class="section-more">更多 →</a>
+        </div>
+        <div class="card-grid">
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">星际穿越2</div>
+                    <div class="card-meta"><span>科幻</span><span>9.5</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">暗夜追凶</div>
+                    <div class="card-meta"><span>悬疑</span><span>8.7</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">爱情公寓5</div>
+                    <div class="card-meta"><span>喜剧</span><span>8.2</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">龙之战神</div>
+                    <div class="card-meta"><span>动作</span><span>7.9</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">深海奇缘</div>
+                    <div class="card-meta"><span>动画</span><span>9.1</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎞️</div>
+                <div class="card-body">
+                    <div class="card-title">时间旅行者</div>
+                    <div class="card-meta"><span>科幻</span><span>8.5</span></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 电视剧栏目 -->
+    <section class="section" id="tv">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon" style="background:rgba(120,115,245,0.15);">📺</span> 热播电视剧</h2>
+            <a href="#" class="section-more">更多 →</a>
+        </div>
+        <div class="card-grid">
+            <a href="#" class="card">
+                <div class="card-poster">📺</div>
+                <div class="card-body">
+                    <div class="card-title">庆余年3</div>
+                    <div class="card-meta"><span>古装</span><span>9.3</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">📺</div>
+                <div class="card-body">
+                    <div class="card-title">狂飙2</div>
+                    <div class="card-meta"><span>犯罪</span><span>9.0</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">📺</div>
+                <div class="card-body">
+                    <div class="card-title">长相思2</div>
+                    <div class="card-meta"><span>仙侠</span><span>8.8</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">📺</div>
+                <div class="card-body">
+                    <div class="card-title">繁花似锦</div>
+                    <div class="card-meta"><span>都市</span><span>8.4</span></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 综艺栏目 -->
+    <section class="section" id="variety">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon" style="background:rgba(74,222,222,0.15);">🎤</span> 综艺娱乐</h2>
+            <a href="#" class="section-more">更多 →</a>
+        </div>
+        <div class="category-grid">
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(255,110,196,0.12);">🎤</div>
+                <span class="category-name">音乐综艺</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(120,115,245,0.12);">🎯</div>
+                <span class="category-name">真人秀</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(74,222,222,0.12);">🧠</div>
+                <span class="category-name">脱口秀</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(255,154,92,0.12);">🍳</div>
+                <span class="category-name">生活纪实</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(92,255,154,0.12);">🏆</div>
+                <span class="category-name">选秀竞技</span>
+            </a>
+            <a href="#" class="category-item">
+                <div class="category-icon" style="background:rgba(255,110,196,0.12);">🎲</div>
+                <span class="category-name">户外游戏</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 动漫栏目 -->
+    <section class="section" id="anime">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon" style="background:rgba(255,154,92,0.15);">🎨</span> 动漫频道</h2>
+            <a href="#" class="section-more">更多 →</a>
+        </div>
+        <div class="card-grid">
+            <a href="#" class="card">
+                <div class="card-poster">🎨</div>
+                <div class="card-body">
+                    <div class="card-title">斗罗大陆5</div>
+                    <div class="card-meta"><span>玄幻</span><span>9.2</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎨</div>
+                <div class="card-body">
+                    <div class="card-title">火影忍者·新篇</div>
+                    <div class="card-meta"><span>热血</span><span>9.0</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎨</div>
+                <div class="card-body">
+                    <div class="card-title">蜡笔小新2025</div>
+                    <div class="card-meta"><span>搞笑</span><span>8.6</span></div>
+                </div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-poster">🎨</div>
+                <div class="card-body">
+                    <div class="card-title">鬼灭之刃·无限城</div>
+                    <div class="card-meta"><span>战斗</span><span>9.4</span></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 排行榜栏目 -->
+    <section class="section" id="rank">
+        <div class="section-header">
+            <h2 class="section-title"><span class="icon" style="background:rgba(255,110,196,0.15);">🏆</span> 热门排行榜</h2>
+            <a href="#" class="section-more">更多 →</a>
+        </div>
+        <div class="rank-list">
+            <a href="#" class="rank-item">
+                <div class="rank-num top1">1</div>
+                <div class="rank-info">
+                    <div class="rank-title">星际穿越2</div>
+                    <div class="rank-score">⭐ 9.5</div>
+                </div>
+            </a>
+            <a href="#" class="rank-item">
+                <div class="rank-num top2">2</div>
+                <div class="rank-info">
+                    <div class="rank-title">庆余年3</div>
+                    <div class="rank-score">⭐ 9.3</div>
+                </div>
+            </a>
+            <a href="#" class="rank-item">
+                <div class="rank-num top3">3</div>
+                <div class="rank-info">
+                    <div class="rank-title">鬼灭之刃·无限城</div>
+                    <div class="rank-score">⭐ 9.4</div>
+                </div>
+            </a>
+            <a href="#" class="rank-item">
+                <div class="rank-num normal">4</div>
+                <div class="rank-info">
+                    <div class="rank-title">狂飙2</div>
+                    <div class="rank-score">⭐ 9.0</div>
+                </div>
+            </a>
+            <a href="#" class="rank-item">
+                <div class="rank-num normal">5</div>
+                <div class="rank-info">
+                    <div class="rank-title">深海奇缘</div>
+                    <div class="rank-score">⭐ 9.1</div>
+                </div>
+            </a>
+            <a href="#" class="rank-item">
+                <div class="rank-num normal">6</div>
+                <div class="rank-info">
+                    <div class="rank-title">斗罗大陆5</div>
+                    <div class="rank-score">⭐ 9.2</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section class="section" id="about">
+        <div class="about-section">
+            <h3>关于 天天看电影网</h3>
+            <p>
+                <strong>天天看电影网</strong>（<a href="https://tiantiankandianyingwang-app.github.io" style="color:#a5a0f7;">tiantiankandianyingwang-app.github.io</a>）是一个专注于影视资源在线观看的网站。
+                我们致力于为影迷提供最新、最热、最全的电影、电视剧、综艺和动漫内容，让您天天看电影，享受精彩视听体验。
+            </p>
+            <p style="font-size:0.85rem; color:rgba(255,255,255,0.35);">
+                关键词：天天看电影网、天天看电影、电影在线观看、高清影视
+            </p>
+            <div class="site-url">🌐 https://tiantiankandianyingwang-app.github.io</div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p>© 2025 天天看电影网(tiantiankandianyingwang-app.github.io) 保留所有权利</p>
+        <p style="margin-top:0.5rem; color:rgba(255,255,255,0.2);">天天看电影，就来天天看电影网 | 天天看电影网</p>
+    </footer>
+</div>
+
+<script>
+// 移动端菜单切换
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+
+menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+});
+
+// 导航栏滚动效果
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// 点击导航链接关闭移动菜单
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+    });
+});
+
+// 平滑滚动修正
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const offset = 70;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = target.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
